@@ -413,5 +413,41 @@ function ding_dibs_cards() {
   $cards['Sampo'] = 'sampo_large.gif';
   $cards['BankAxess'] = 'BankAxess_03.gif';
   $cards['Getitcard'] = 'getitcard2_53x33.gif';
+
   return $cards;
+}
+
+/**
+ * Implements theme_registry_alter().
+ *
+ * Alter dibs_redirect_page template.
+ */
+function ding_dibs_theme_registry_alter(&$theme_registry) {
+  $path = drupal_get_path('module', 'ding_dibs');
+  $theme_registry['dibs_redirect_page']['theme_path'] =  $path . '/templates';
+  $theme_registry['dibs_redirect_page']['template'] = $path . '/templates/dibs-redirect-page';
+  $theme_registry['dibs_redirect_page']['preprocess functions'][] = 'ding_dibs_redirect_page_preprocess';
+}
+
+/**
+ * Template preprocess.
+ */
+function ding_dibs_redirect_page_preprocess(&$vars) {
+  global $language;
+  $markup = '';
+
+  // Render blocks with available cards and conditions.
+  $block = block_load('ding_dibs', 'dibs-cards-supported');
+  $markup .= drupal_render(_block_get_renderable_array(_block_render_blocks(array($block))));
+  $block = block_load('ding_dibs', 'dibs-terms-of-sale');
+  $markup .= drupal_render(_block_get_renderable_array(_block_render_blocks(array($block))));
+  $markup .= '<div class="agree">' . t('By clicking the button below you agree with terms') . '</div>';
+
+  array_unshift(
+    $vars['form'],
+    array('#markup' => $markup)
+  );
+
+  // Remove auto submit JS.
+  unset($vars['form']['submit']['#attached']['js']);
 }
