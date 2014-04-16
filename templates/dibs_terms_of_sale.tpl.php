@@ -5,5 +5,5 @@
  */
 ?>
 <div id="dibs-terms-of-sale">
-  <p> <?php print $terms_of_sale ?></p>
+  <?php print $terms_of_sale ?>
 </div>

@@ -438,9 +438,13 @@ function ding_dibs_redirect_page_preprocess(&$vars) {
 
   // Render blocks with available cards and conditions.
   $block = block_load('ding_dibs', 'dibs-cards-supported');
-  $markup .= drupal_render(_block_get_renderable_array(_block_render_blocks(array($block))));
+  $block_render = _block_render_blocks(array($block));
+  $block_render_arr = _block_get_renderable_array($block_render);
+  $markup .= drupal_render($block_render_arr);
   $block = block_load('ding_dibs', 'dibs-terms-of-sale');
-  $markup .= drupal_render(_block_get_renderable_array(_block_render_blocks(array($block))));
+  $block_render = _block_render_blocks(array($block));
+  $block_render_arr = _block_get_renderable_array($block_render);
+  $markup .= drupal_render($block_render_arr);
   $markup .= '<div class="agree">' . t('By clicking the button below you agree with terms') . '</div>';
 
   array_unshift(
