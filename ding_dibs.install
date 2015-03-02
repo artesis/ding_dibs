@@ -30,6 +30,8 @@ function ding_dibs_install() {
     'default' => 0,
     'description' => st('0 = capture failed, 1 = capture succeeded'),
   ));
+
+  ding_dibs_update_7001();
 }
 
 /**
@@ -51,4 +53,19 @@ function ding_dibs_update_7000(&$sandbox) {
     'default' => 0,
     'description' => t('0 = capture failed, 1 = capture succeeded'),
   ));
+}
+
+/**
+ * Extend order_info_short field.
+ */
+function ding_dibs_update_7001() {
+  db_change_field(
+    'dibs_transactions',
+    'order_info_short',
+    'order_info_short',
+    array(
+      'type' => 'text',
+      'not null' => TRUE,
+    )
+  );
 }
